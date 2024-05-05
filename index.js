@@ -1,7 +1,20 @@
-// Alice should have the initial balance minus tranfer amount
-if (aliceBalanceAfter[0].amount !== ALICE_INITIAL_BALANCE - TRANSFER_AMOUNT)
-  throw new Error("Alice's balance after transfer is incorrect");
-
-// Sponsor should have the initial balance minus gas
-if (sponsorBalanceAfter[0].amount >= SPONSOR_INITIAL_BALANCE)
-  throw new Error("Sponsor's balance after transfer is incorrect");
+function isAlienSorted(words, order) {
+  const dict = new Map();
+  for (let i = 0; i < order.length; i++) {
+    dict.set(order[i], i);
+  }
+  for (let i = 0; i < words.length - 1; i++) {
+    const word1 = words[i];
+    const word2 = words[i + 1];
+    let found = false;
+    for (let j = 0; j < Math.min(word1.length, word2.length); j++) {
+      if (word1[j] !== word2[j]) {
+        if (dict.get(word1[j]) > dict.get(word2[j])) return false;
+        found = true;
+        break;
+      }
+    }
+    if (!found && word1.length > word2.length) return false;
+  }
+  return true;
+}
