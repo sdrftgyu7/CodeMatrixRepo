@@ -1,20 +1,14 @@
-function isAlienSorted(words, order) {
-  const dict = new Map();
-  for (let i = 0; i < order.length; i++) {
-    dict.set(order[i], i);
-  }
-  for (let i = 0; i < words.length - 1; i++) {
-    const word1 = words[i];
-    const word2 = words[i + 1];
-    let found = false;
-    for (let j = 0; j < Math.min(word1.length, word2.length); j++) {
-      if (word1[j] !== word2[j]) {
-        if (dict.get(word1[j]) > dict.get(word2[j])) return false;
-        found = true;
-        break;
+const shellSort = (arr) => {
+  const n = arr.length;
+  for (let gap = Math.floor(n / 2); gap > 0; gap = Math.floor(gap / 2)) {
+    for (let i = gap; i < n; i++) {
+      const temp = arr[i];
+      let j;
+      for (j = i; j >= gap && arr[j - gap] > temp; j -= gap) {
+        arr[j] = arr[j - gap];
       }
+      arr[j] = temp;
     }
-    if (!found && word1.length > word2.length) return false;
   }
-  return true;
-}
+  return arr;
+};
