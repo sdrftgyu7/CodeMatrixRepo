@@ -1,30 +1,33 @@
-function maximalRectangle(matrix) {
-  if (matrix.length === 0 || matrix[0].length === 0) return 0;
-  const rows = matrix.length;
-  const cols = matrix[0].length;
-  const heights = new Array(cols).fill(0);
-  let maxArea = 0;
-  for (let i = 0; i < rows; i++) {
-    for (let j = 0; j < cols; j++) {
-      heights[j] = matrix[i][j] === "1" ? heights[j] + 1 : 0;
+function totalNQueens(n) {
+  let count = 0;
+  const board = Array.from({ length: n }, () =>
+    Array.from({ length: n }, () => "."),
+  );
+  backtrack(0);
+  return count;
+  function backtrack(row) {
+    if (row === n) {
+      count++;
+      return;
     }
-    maxArea = Math.max(maxArea, largestRectangleArea(heights));
-  }
-  return maxArea;
-  function largestRectangleArea(heights) {
-    const stack = [];
-    let maxArea = 0;
-    for (let i = 0; i <= heights.length; i++) {
-      while (
-        stack.length &&
-        (i === heights.length || heights[i] < heights[stack[stack.length - 1]])
-      ) {
-        const height = heights[stack.pop()];
-        const width = stack.length === 0 ? i : i - stack[stack.length - 1] - 1;
-        maxArea = Math.max(maxArea, height * width);
+    for (let col = 0; col < n; col++) {
+      if (isValid(row, col)) {
+        board[row][col] = "Q";
+        backtrack(row + 1);
+        board[row][col] = ".";
       }
-      stack.push(i);
     }
-    return maxArea;
+  }
+  function isValid(row, col) {
+    for (let i = 0; i < row; i++) {
+      if (board[i][col] === "Q") return false;
+    }
+    for (let i = row - 1, j = col - 1; i >= 0 && j >= 0; i--, j--) {
+      if (board[i][j] === "Q") return false;
+    }
+    for (let i = row - 1, j = col + 1; i >= 0 && j < n; i--, j++) {
+      if (board[i][j] === "Q") return false;
+    }
+    return true;
   }
 }
