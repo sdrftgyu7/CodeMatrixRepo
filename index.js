@@ -1,15 +1,15 @@
-function isValidBST(root) {
-  const stack = [];
-  let inorder = -Infinity;
-  while (stack.length || root) {
-    while (root) {
-      stack.push(root);
-      root = root.left;
+function findMaxLength(nums) {
+  const map = new Map();
+  map.set(0, -1);
+  let count = 0;
+  let maxLength = 0;
+  for (let i = 0; i < nums.length; i++) {
+    count += nums[i] === 1 ? 1 : -1;
+    if (map.has(count)) {
+      maxLength = Math.max(maxLength, i - map.get(count));
+    } else {
+      map.set(count, i);
     }
-    root = stack.pop();
-    if (root.val <= inorder) return false;
-    inorder = root.val;
-    root = root.right;
   }
-  return true;
+  return maxLength;
 }
